@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GoldifyTech UI Demo</title>
+        <style>
+            :root {
+                --bg: #07111f;
+                --bg-soft: #0d1727;
+                --panel: rgba(10, 21, 37, 0.78);
+                --panel-strong: rgba(14, 27, 46, 0.96);
+                --line: rgba(148, 163, 184, 0.18);
+                --text: #ecf5ff;
+                --muted: #98a9c0;
+                --primary: #36c2ff;
+                --primary-2: #7c5cff;
+                --success: #24d39a;
+                --warning: #ffb648;
+                --danger: #ff668f;
+                --shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
+                --radius: 24px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                font-family:
+                    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                    "Segoe UI", sans-serif;
+                background:
+                    radial-gradient(circle at top left, rgba(54, 194, 255, 0.18), transparent 28%),
+                    radial-gradient(circle at top right, rgba(124, 92, 255, 0.18), transparent 26%),
+                    linear-gradient(180deg, #050c17 0%, #08111f 45%, #050a13 100%);
+                color: var(--text);
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            .container {
+                width: min(1280px, calc(100% - 32px));
+                margin: 0 auto;
+            }
+
+            .tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 14px;
+                border-radius: 999px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.04);
+                color: #cfe8ff;
+                font-size: 13px;
+            }
+
+            .tag::before {
+                content: "";
+                width: 8px;
+                height: 8px;
+                border-radius: 999px;
+                background: linear-gradient(135deg, var(--primary), var(--primary-2));
+                box-shadow: 0 0 20px rgba(54, 194, 255, 0.6);
+            }
+
+            .button-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                min-height: 48px;
+                padding: 0 20px;
+                border-radius: 14px;
+                border: 1px solid transparent;
+                font-weight: 600;
+                cursor: default;
+            }
+
+            .button.primary {
+                background: linear-gradient(135deg, var(--primary), #1e86ff);
+                color: #04111e;
+                box-shadow: 0 16px 40px rgba(54, 194, 255, 0.26);
+            }
+
+            .button.secondary {
+                border-color: rgba(255, 255, 255, 0.14);
+                background: rgba(255, 255, 255, 0.04);
+                color: var(--text);
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 20;
+                backdrop-filter: blur(18px);
+                background: rgba(5, 12, 22, 0.68);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+            .topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                min-height: 78px;
+            }
+
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                font-weight: 800;
+                letter-spacing: 0.04em;
+            }
+
+            .brand-mark {
+                width: 40px;
+                height: 40px;
+                border-radius: 14px;
+                background: linear-gradient(135deg, var(--primary), var(--primary-2));
+                box-shadow: 0 14px 34px rgba(54, 194, 255, 0.34);
+                position: relative;
+            }
+
+            .brand-mark::after {
+                content: "";
+                position: absolute;
+                inset: 8px;
+                border-radius: 10px;
+                border: 2px solid rgba(255, 255, 255, 0.65);
+            }
+
+            nav {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            .top-actions {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .search-pill,
+            .icon-pill {
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.04);
+                color: #d7e8fb;
+            }
+
+            .search-pill {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-width: 240px;
+                min-height: 46px;
+                padding: 0 16px;
+                border-radius: 14px;
+                font-size: 14px;
+            }
+
+            .icon-pill {
+                width: 46px;
+                height: 46px;
+                display: grid;
+                place-items: center;
+                border-radius: 14px;
+                font-size: 18px;
+            }
+
+            .hero {
+                padding: 40px 0 18px;
+            }
+
+            .hero-grid {
+                display: grid;
+                grid-template-columns: 1.2fr 0.8fr;
+                gap: 22px;
+            }
+
+            .panel {
+                background: var(--panel);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                overflow: hidden;
+            }
+
+            .hero-card {
+                position: relative;
+                min-height: 520px;
+                padding: 38px;
+                background:
+                    radial-gradient(circle at 25% 25%, rgba(54, 194, 255, 0.26), transparent 30%),
+                    radial-gradient(circle at 75% 20%, rgba(124, 92, 255, 0.2), transparent 32%),
+                    linear-gradient(160deg, rgba(11, 23, 41, 0.96), rgba(6, 12, 20, 0.98));
+            }
+
+            .hero-card h1 {
+                margin: 16px 0 16px;
+                max-width: 680px;
+                font-size: clamp(40px, 6vw, 72px);
+                line-height: 0.96;
+                letter-spacing: -0.04em;
+            }
+
+            .hero-card p {
+                max-width: 620px;
+                margin: 0 0 24px;
+                font-size: 17px;
+                line-height: 1.7;
+                color: var(--muted);
+            }
+
+            .hero-stats {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                margin-top: 28px;
+            }
+
+            .hero-stat {
+                min-width: 150px;
+                padding: 16px 18px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .hero-stat strong {
+                display: block;
+                margin-bottom: 6px;
+                font-size: 20px;
+            }
+
+            .device-showcase {
+                position: absolute;
+                right: 26px;
+                bottom: 22px;
+                display: flex;
+                gap: 18px;
+                align-items: flex-end;
+            }
+
+            .device {
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)),
+                    linear-gradient(135deg, #13243d, #0c1522);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+
+            .device.laptop {
+                width: 280px;
+                height: 180px;
+                border-radius: 20px 20px 12px 12px;
+                position: relative;
+            }
+
+            .device.laptop::after {
+                content: "";
+                position: absolute;
+                left: -10px;
+                right: -10px;
+                bottom: -18px;
+                height: 18px;
+                border-radius: 0 0 16px 16px;
+                background: linear-gradient(180deg, #d2deea, #73839a);
+            }
+
+            .device.phone {
+                width: 108px;
+                height: 220px;
+                border-radius: 26px;
+                position: relative;
+            }
+
+            .device.phone::before {
+                content: "";
+                position: absolute;
+                top: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 38px;
+                height: 6px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.28);
+            }
+
+            .screen-ui {
+                position: absolute;
+                inset: 18px;
+                border-radius: 16px;
+                background:
+                    linear-gradient(180deg, rgba(54, 194, 255, 0.26), transparent 26%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+                overflow: hidden;
+            }
+
+            .screen-ui .bar {
+                height: 14px;
+                margin: 18px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            .screen-ui .chart {
+                height: 80px;
+                margin: 18px;
+                border-radius: 18px;
+                background:
+                    radial-gradient(circle at 20% 40%, rgba(54, 194, 255, 0.45), transparent 30%),
+                    linear-gradient(135deg, rgba(124, 92, 255, 0.4), rgba(54, 194, 255, 0.16));
+            }
+
+            .screen-ui .chips {
+                display: flex;
+                gap: 10px;
+                padding: 0 18px;
+            }
+
+            .screen-ui .chips span {
+                height: 28px;
+                flex: 1;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .right-stack {
+                display: grid;
+                gap: 22px;
+            }
+
+            .mini-card {
+                padding: 24px;
+                min-height: 248px;
+                background:
+                    linear-gradient(180deg, rgba(13, 27, 46, 0.98), rgba(7, 16, 28, 0.95));
+            }
+
+            .mini-card h3,
+            .section-head h2,
+            .frame-title h3 {
+                margin: 0;
+                font-size: 24px;
+                letter-spacing: -0.03em;
+            }
+
+            .mini-card p,
+            .section-head p,
+            .frame-caption {
+                color: var(--muted);
+                line-height: 1.7;
+            }
+
+            .payment-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin-top: 18px;
+            }
+
+            .payment-item {
+                padding: 14px;
+                border-radius: 18px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.04);
+                font-size: 14px;
+            }
+
+            .support-list {
+                display: grid;
+                gap: 12px;
+                margin-top: 16px;
+            }
+
+            .support-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 16px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            section {
+                padding: 26px 0;
+            }
+
+            .section-head {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 16px;
+                margin-bottom: 18px;
+            }
+
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 18px;
+            }
+
+            .product-card {
+                padding: 18px;
+                border-radius: 22px;
+                background: var(--panel-strong);
+                border: 1px solid var(--line);
+                box-shadow: var(--shadow);
+            }
+
+            .product-art {
+                height: 220px;
+                border-radius: 18px;
+                margin-bottom: 16px;
+                position: relative;
+                overflow: hidden;
+                background:
+                    radial-gradient(circle at 30% 20%, rgba(54, 194, 255, 0.35), transparent 24%),
+                    radial-gradient(circle at 75% 30%, rgba(124, 92, 255, 0.28), transparent 25%),
+                    linear-gradient(145deg, #122238, #0c1420 50%, #182b43);
+            }
+
+            .product-art::after {
+                content: "";
+                position: absolute;
+                inset: 26px;
+                border-radius: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent),
+                    linear-gradient(135deg, #1b2c47, #101827);
+            }
+
+            .product-meta {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 10px;
+                color: var(--muted);
+                font-size: 13px;
+            }
+
+            .product-card h4 {
+                margin: 0 0 10px;
+                font-size: 18px;
+            }
+
+            .price-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                margin-top: 16px;
+            }
+
+            .price strong {
+                display: block;
+                font-size: 22px;
+                color: #ffffff;
+            }
+
+            .price span {
+                color: var(--muted);
+                font-size: 13px;
+                text-decoration: line-through;
+            }
+
+            .small-btn {
+                min-height: 42px;
+                padding: 0 16px;
+                border-radius: 12px;
+                background: rgba(54, 194, 255, 0.12);
+                border: 1px solid rgba(54, 194, 255, 0.26);
+                color: #c9efff;
+                font-weight: 600;
+            }
+
+            .frames {
+                display: grid;
+                gap: 22px;
+            }
+
+            .frame {
+                padding: 20px;
+                border-radius: 28px;
+                border: 1px solid var(--line);
+                background: linear-gradient(180deg, rgba(9, 18, 31, 0.94), rgba(8, 14, 25, 0.98));
+                box-shadow: var(--shadow);
+            }
+
+            .frame-title {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+
+            .window {
+                border-radius: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                overflow: hidden;
+                background: #0c1523;
+            }
+
+            .window-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 18px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .dots {
+                display: flex;
+                gap: 8px;
+            }
+
+            .dots span {
+                width: 10px;
+                height: 10px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.18);
+            }
+
+            .browser-pill {
+                min-width: 320px;
+                max-width: 56%;
+                min-height: 34px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.06);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                color: #bfd0e4;
+            }
+
+            .home-demo {
+                display: grid;
+                grid-template-columns: 1.1fr 0.9fr;
+                gap: 18px;
+                padding: 18px;
+            }
+
+            .hero-mini {
+                padding: 24px;
+                border-radius: 22px;
+                min-height: 360px;
+                background:
+                    radial-gradient(circle at 20% 20%, rgba(54, 194, 255, 0.24), transparent 30%),
+                    linear-gradient(145deg, #0f1f35, #09111c);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                position: relative;
+            }
+
+            .hero-mini h4 {
+                margin: 14px 0 12px;
+                max-width: 460px;
+                font-size: 42px;
+                line-height: 1.05;
+                letter-spacing: -0.05em;
+            }
+
+            .hero-mini .mini-devices {
+                position: absolute;
+                right: 24px;
+                bottom: 24px;
+                display: flex;
+                align-items: end;
+                gap: 12px;
+            }
+
+            .mini-laptop,
+            .mini-phone {
+                background: linear-gradient(135deg, #16283f, #0e1724);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            }
+
+            .mini-laptop {
+                width: 190px;
+                height: 120px;
+                border-radius: 18px;
+            }
+
+            .mini-phone {
+                width: 72px;
+                height: 146px;
+                border-radius: 20px;
+            }
+
+            .promo-stack {
+                display: grid;
+                gap: 18px;
+            }
+
+            .promo-card,
+            .catalog-card,
+            .summary-card,
+            .feature-box {
+                border-radius: 22px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.04);
+            }
+
+            .promo-card {
+                padding: 20px;
+                min-height: 170px;
+            }
+
+            .mini-products {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .mini-product {
+                padding: 14px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .mini-product .thumb {
+                height: 110px;
+                margin-bottom: 10px;
+                border-radius: 14px;
+                background: linear-gradient(135deg, #1b2b46, #101827);
+            }
+
+            .listing-demo {
+                display: grid;
+                grid-template-columns: 260px 1fr;
+                gap: 18px;
+                padding: 18px;
+            }
+
+            .sidebar-card {
+                padding: 18px;
+                border-radius: 20px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .filter-group {
+                margin-bottom: 18px;
+            }
+
+            .filter-group h5 {
+                margin: 0 0 12px;
+                font-size: 14px;
+            }
+
+            .check {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+                color: #c8d6e8;
+                font-size: 14px;
+            }
+
+            .check::before {
+                content: "";
+                width: 16px;
+                height: 16px;
+                border-radius: 6px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                background: rgba(255, 255, 255, 0.04);
+            }
+
+            .listing-main {
+                display: grid;
+                gap: 16px;
+            }
+
+            .toolbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 14px 16px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .chip-row {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .chip {
+                padding: 10px 14px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                font-size: 13px;
+                color: #d7e3f0;
+            }
+
+            .detail-demo {
+                display: grid;
+                grid-template-columns: 1fr 0.9fr;
+                gap: 18px;
+                padding: 18px;
+            }
+
+            .gallery {
+                padding: 18px;
+                border-radius: 22px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .gallery-main {
+                height: 430px;
+                border-radius: 22px;
+                background:
+                    radial-gradient(circle at 30% 20%, rgba(54, 194, 255, 0.3), transparent 22%),
+                    linear-gradient(145deg, #13233b, #0b121d 55%, #1b2d46);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .gallery-main::after {
+                content: "";
+                position: absolute;
+                inset: 54px;
+                border-radius: 28px;
+                background: linear-gradient(135deg, #1a2f4a, #0f1826);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+            }
+
+            .thumb-row {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 12px;
+                margin-top: 14px;
+            }
+
+            .thumb-row div {
+                height: 78px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .detail-panel {
+                padding: 24px;
+                border-radius: 22px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .detail-panel h4 {
+                margin: 12px 0 10px;
+                font-size: 34px;
+                line-height: 1.12;
+                letter-spacing: -0.04em;
+            }
+
+            .spec-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+
+            .spec-grid div {
+                padding: 14px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .option-row {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin: 14px 0 20px;
+            }
+
+            .option {
+                padding: 11px 14px;
+                border-radius: 14px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .option.active {
+                border-color: rgba(54, 194, 255, 0.36);
+                background: rgba(54, 194, 255, 0.12);
+                color: #dff6ff;
+            }
+
+            .checkout-demo {
+                display: grid;
+                grid-template-columns: 1fr 350px;
+                gap: 18px;
+                padding: 18px;
+            }
+
+            .form-card,
+            .summary-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .input,
+            .textarea {
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.09);
+                background: rgba(255, 255, 255, 0.04);
+                min-height: 52px;
+                padding: 0 16px;
+                color: #dcecff;
+                font-size: 14px;
+            }
+
+            .textarea {
+                min-height: 108px;
+                padding-top: 14px;
+            }
+
+            .full {
+                grid-column: 1 / -1;
+            }
+
+            .payment-methods {
+                display: grid;
+                gap: 12px;
+                margin-top: 14px;
+            }
+
+            .pay-card {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 14px 16px;
+                border-radius: 18px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.04);
+            }
+
+            .pay-card.active {
+                border-color: rgba(54, 194, 255, 0.34);
+                background: rgba(54, 194, 255, 0.1);
+            }
+
+            .pay-card .left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .radio {
+                width: 18px;
+                height: 18px;
+                border-radius: 999px;
+                border: 2px solid rgba(255, 255, 255, 0.26);
+            }
+
+            .pay-card.active .radio {
+                border-color: var(--primary);
+                box-shadow: inset 0 0 0 4px rgba(54, 194, 255, 0.9);
+            }
+
+            .sum-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 12px;
+                color: #d3e2f4;
+            }
+
+            .sum-row.muted {
+                color: var(--muted);
+            }
+
+            .sum-total {
+                margin: 18px 0;
+                padding-top: 16px;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+            }
+
+            .sum-total strong {
+                font-size: 28px;
+            }
+
+            .mobile-preview {
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .phone-frame {
+                width: 330px;
+                border-radius: 34px;
+                padding: 12px;
+                background: linear-gradient(180deg, #121d2d, #0a121d);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: var(--shadow);
+            }
+
+            .phone-screen {
+                border-radius: 26px;
+                overflow: hidden;
+                background: #08111d;
+            }
+
+            .mobile-top {
+                padding: 18px;
+                background:
+                    radial-gradient(circle at top left, rgba(54, 194, 255, 0.18), transparent 26%),
+                    linear-gradient(180deg, #0d192b, #08111d);
+            }
+
+            .mobile-top h4 {
+                margin: 12px 0 10px;
+                font-size: 28px;
+                line-height: 1.08;
+                letter-spacing: -0.04em;
+            }
+
+            .mobile-products {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .mobile-card {
+                padding: 10px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .mobile-thumb {
+                height: 92px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #1a2d48, #0f1726);
+                margin-bottom: 8px;
+            }
+
+            .mobile-bottom-nav {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                padding: 12px 14px 16px;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .mobile-bottom-nav div {
+                display: grid;
+                place-items: center;
+                gap: 6px;
+                font-size: 11px;
+                color: #c1d4ea;
+            }
+
+            .mobile-bottom-nav span {
+                width: 22px;
+                height: 22px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            footer {
+                padding: 36px 0 58px;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            .footer-card {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 22px 24px;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            @media (max-width: 1100px) {
+                nav {
+                    display: none;
+                }
+
+                .hero-grid,
+                .home-demo,
+                .detail-demo,
+                .checkout-demo,
+                .listing-demo {
+                    grid-template-columns: 1fr;
+                }
+
+                .product-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .device-showcase {
+                    position: static;
+                    margin-top: 24px;
+                    justify-content: flex-start;
+                }
+            }
+
+            @media (max-width: 720px) {
+                .search-pill {
+                    display: none;
+                }
+
+                .product-grid,
+                .mini-products,
+                .form-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .browser-pill {
+                    display: none;
+                }
+
+                .hero-card {
+                    padding: 24px;
+                    min-height: auto;
+                }
+
+                .hero-mini h4,
+                .detail-panel h4 {
+                    font-size: 28px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container topbar">
+                <div class="brand">
+                    <div class="brand-mark"></div>
+                    <div>GOLDIFYTECH</div>
+                </div>
+                <nav>
+                    <a href="#home">Trang chủ</a>
+                    <a href="#products">Sản phẩm</a>
+                    <a href="#detail">Chi tiết</a>
+                    <a href="#checkout">Checkout</a>
+                    <a href="#mobile">Mobile</a>
+                </nav>
+                <div class="top-actions">
+                    <div class="search-pill">🔎 Tìm laptop, tai nghe, gaming gear...</div>
+                    <div class="icon-pill">❤</div>
+                    <div class="icon-pill">🛒</div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero" id="home">
+                <div class="container hero-grid">
+                    <div class="panel hero-card">
+                        <span class="tag">Concept UI cho website bán đồ công nghệ</span>
+                        <h1>Một storefront công nghệ hiện đại, tối ưu cảm giác “xem nhanh, mua nhanh, thanh toán gọn”.</h1>
+                        <p>
+                            Hướng thiết kế này ưu tiên cảm giác cao cấp, tông tối đậm chất tech, CTA rõ ràng và
+                            tập trung mạnh vào các khu vực tạo chuyển đổi như danh sách sản phẩm, chi tiết sản phẩm,
+                            giỏ hàng và checkout một trang.
+                        </p>
+                        <div class="button-row">
+                            <div class="button primary">Mua ngay</div>
+                            <div class="button secondary">Xem bộ sưu tập</div>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <strong>48h</strong>
+                                Giao nhanh nội thành
+                            </div>
+                            <div class="hero-stat">
+                                <strong>5 cách</strong>
+                                Thanh toán linh hoạt
+                            </div>
+                            <div class="hero-stat">
+                                <strong>OTP</strong>
+                                Mua không cần đăng nhập
+                            </div>
+                        </div>
+                        <div class="device-showcase">
+                            <div class="device laptop">
+                                <div class="screen-ui">
+                                    <div class="bar"></div>
+                                    <div class="chart"></div>
+                                    <div class="chips"><span></span><span></span><span></span></div>
+                                </div>
+                            </div>
+                            <div class="device phone">
+                                <div class="screen-ui">
+                                    <div class="bar" style="margin-top: 24px"></div>
+                                    <div class="chart" style="height: 100px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-stack">
+                        <div class="panel mini-card">
+                            <h3>Thanh toán phù hợp thị trường Việt Nam</h3>
+                            <p>
+                                Khu checkout ưu tiên rõ ràng, dễ tin tưởng và đủ các lựa chọn: COD, Visa, Momo, VNPay,
+                                thẻ nội địa.
+                            </p>
+                            <div class="payment-grid">
+                                <div class="payment-item">COD</div>
+                                <div class="payment-item">Visa / Master</div>
+                                <div class="payment-item">Momo</div>
+                                <div class="payment-item">VNPay</div>
+                            </div>
+                        </div>
+
+                        <div class="panel mini-card">
+                            <h3>Support luôn hiện diện</h3>
+                            <p>
+                                Từ mọi trang đều nên có điểm chạm hỗ trợ nhanh để người dùng hỏi về cấu hình, bảo hành
+                                hoặc thanh toán.
+                            </p>
+                            <div class="support-list">
+                                <div class="support-item"><span>Zalo Support</span><strong>Online</strong></div>
+                                <div class="support-item"><span>Facebook Messenger</span><strong>24/7</strong></div>
+                                <div class="support-item"><span>Hotline / Email</span><strong>Ưu tiên đơn hàng</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="products">
+                <div class="container">
+                    <div class="section-head">
+                        <div>
+                            <h2>Ngôn ngữ thiết kế sản phẩm</h2>
+                            <p>Card sản phẩm đậm chất công nghệ, nổi bật hình ảnh, giá và nút hành động.</p>
+                        </div>
+                        <span class="tag">Dark tech premium</span>
+                    </div>
+
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-art"></div>
+                            <div class="product-meta"><span>Laptop Gaming</span><span style="color: var(--success)">Còn hàng</span></div>
+                            <h4>ROG Strix G18 AI Edition</h4>
+                            <p class="frame-caption">RTX series, màn hình 240Hz, ưu tiên hiệu năng và tản nhiệt.</p>
+                            <div class="price-row">
+                                <div class="price"><strong>42.990.000đ</strong><span>46.990.000đ</span></div>
+                                <div class="small-btn">Thêm giỏ</div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-art" style="background: radial-gradient(circle at 70% 25%, rgba(54,194,255,0.3), transparent 24%), linear-gradient(145deg, #17293f, #0d1521 50%, #20344f);"></div>
+                            <div class="product-meta"><span>Tai nghe</span><span style="color: var(--warning)">Best Seller</span></div>
+                            <h4>Sony WH-1000XM6</h4>
+                            <p class="frame-caption">Chống ồn chủ động, pin trâu, phù hợp đi làm và di chuyển.</p>
+                            <div class="price-row">
+                                <div class="price"><strong>9.790.000đ</strong><span>10.990.000đ</span></div>
+                                <div class="small-btn">Thêm giỏ</div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-art" style="background: radial-gradient(circle at 28% 20%, rgba(124,92,255,0.34), transparent 20%), linear-gradient(145deg, #182b43, #0d1521 45%, #16304e);"></div>
+                            <div class="product-meta"><span>Màn hình</span><span style="color: var(--primary)">Mới</span></div>
+                            <h4>LG UltraGear OLED 32"</h4>
+                            <p class="frame-caption">Thiết kế tối giản, phù hợp desk setup công nghệ cao cấp.</p>
+                            <div class="price-row">
+                                <div class="price"><strong>28.490.000đ</strong><span>31.490.000đ</span></div>
+                                <div class="small-btn">Thêm giỏ</div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-art" style="background: radial-gradient(circle at 60% 20%, rgba(255,182,72,0.24), transparent 22%), linear-gradient(145deg, #17283d, #0e1623 50%, #22354b);"></div>
+                            <div class="product-meta"><span>Phụ kiện</span><span style="color: var(--danger)">Giảm giá</span></div>
+                            <h4>Keychron Q1 Max</h4>
+                            <p class="frame-caption">Bàn phím cơ dành cho người dùng mê trải nghiệm gõ và setup đẹp.</p>
+                            <div class="price-row">
+                                <div class="price"><strong>5.290.000đ</strong><span>5.990.000đ</span></div>
+                                <div class="small-btn">Thêm giỏ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="container frames">
+                    <div class="frame">
+                        <div class="frame-title">
+                            <div>
+                                <h3>Mockup trang chủ</h3>
+                                <div class="frame-caption">Hero mạnh, block khuyến mãi rõ, grid sản phẩm sạch và dễ lướt.</div>
+                            </div>
+                            <span class="tag">Home concept</span>
+                        </div>
+                        <div class="window">
+                            <div class="window-bar">
+                                <div class="dots"><span></span><span></span><span></span></div>
+                                <div class="browser-pill">goldifytech.vn</div>
+                                <div style="width: 70px"></div>
+                            </div>
+                            <div class="home-demo">
+                                <div class="hero-mini">
+                                    <span class="tag">Tech Week Sale</span>
+                                    <h4>Thiết bị mạnh hơn, setup đẹp hơn, mua hàng dễ hơn.</h4>
+                                    <p class="frame-caption">Hero cho website công nghệ nên đi vào cảm giác hiệu năng, tin cậy và premium thay vì quá nhiều text.</p>
+                                    <div class="button-row" style="margin-top: 18px">
+                                        <div class="button primary">Mua ngay</div>
+                                        <div class="button secondary">Xem deal</div>
+                                    </div>
+                                    <div class="mini-devices">
+                                        <div class="mini-laptop"></div>
+                                        <div class="mini-phone"></div>
+                                    </div>
+                                </div>
+                                <div class="promo-stack">
+                                    <div class="promo-card">
+                                        <strong style="display:block; font-size: 20px; margin-bottom: 10px">Flash Sale Gaming Setup</strong>
+                                        <p class="frame-caption">Khối promo đứng cạnh hero giúp đẩy chương trình ưu đãi mà không phá bố cục chính.</p>
+                                    </div>
+                                    <div class="promo-card">
+                                        <strong style="display:block; font-size: 20px; margin-bottom: 10px">Mua không cần đăng nhập</strong>
+                                        <p class="frame-caption">Luồng OTP xác minh số điện thoại nên được nhấn mạnh như một lợi thế tiện lợi.</p>
+                                    </div>
+                                </div>
+                                <div class="mini-products" style="grid-column: 1 / -1;">
+                                    <div class="mini-product"><div class="thumb"></div><strong>Laptop AI</strong><div class="frame-caption">42.9 triệu</div></div>
+                                    <div class="mini-product"><div class="thumb"></div><strong>Tai nghe ANC</strong><div class="frame-caption">9.7 triệu</div></div>
+                                    <div class="mini-product"><div class="thumb"></div><strong>Màn hình OLED</strong><div class="frame-caption">28.4 triệu</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="frame">
+                        <div class="frame-title">
+                            <div>
+                                <h3>Mockup danh sách sản phẩm</h3>
+                                <div class="frame-caption">Sidebar filter rõ, toolbar gọn và card đủ thông tin để ra quyết định nhanh.</div>
+                            </div>
+                            <span class="tag">Listing concept</span>
+                        </div>
+                        <div class="window">
+                            <div class="window-bar">
+                                <div class="dots"><span></span><span></span><span></span></div>
+                                <div class="browser-pill">goldifytech.vn/laptop-gaming</div>
+                                <div style="width: 70px"></div>
+                            </div>
+                            <div class="listing-demo">
+                                <div class="sidebar-card">
+                                    <div class="filter-group">
+                                        <h5>Loại sản phẩm</h5>
+                                        <div class="check">Laptop Gaming</div>
+                                        <div class="check">Laptop Văn phòng</div>
+                                        <div class="check">PC / Gaming Gear</div>
+                                    </div>
+                                    <div class="filter-group">
+                                        <h5>Mức giá</h5>
+                                        <div class="check">Dưới 10 triệu</div>
+                                        <div class="check">10 - 25 triệu</div>
+                                        <div class="check">Trên 25 triệu</div>
+                                    </div>
+                                    <div class="filter-group">
+                                        <h5>Thương hiệu</h5>
+                                        <div class="check">ASUS</div>
+                                        <div class="check">LG</div>
+                                        <div class="check">Sony</div>
+                                    </div>
+                                </div>
+                                <div class="listing-main">
+                                    <div class="toolbar">
+                                        <div class="chip-row">
+                                            <div class="chip">Hiệu năng AI</div>
+                                            <div class="chip">Màn OLED</div>
+                                            <div class="chip">240Hz</div>
+                                        </div>
+                                        <div class="chip">Sắp xếp: Nổi bật</div>
+                                    </div>
+                                    <div class="product-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+                                        <div class="mini-product"><div class="thumb" style="height: 150px"></div><strong>ROG Strix</strong><div class="frame-caption">42.990.000đ</div></div>
+                                        <div class="mini-product"><div class="thumb" style="height: 150px"></div><strong>Legion Pro</strong><div class="frame-caption">39.790.000đ</div></div>
+                                        <div class="mini-product"><div class="thumb" style="height: 150px"></div><strong>Zephyrus G16</strong><div class="frame-caption">47.190.000đ</div></div>
+                                        <div class="mini-product"><div class="thumb" style="height: 150px"></div><strong>MSI Raider</strong><div class="frame-caption">44.690.000đ</div></div>
+                                        <div class="mini-product"><div class="thumb" style="height: 150px"></div><strong>Predator Helios</strong><div class="frame-caption">36.990.000đ</div></div>
+                                        <div class="mini-product"><div class="thumb" style="height: 150px"></div><strong>TUF Gaming</strong><div class="frame-caption">28.490.000đ</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="frame" id="detail">
+                        <div class="frame-title">
+                            <div>
+                                <h3>Mockup chi tiết sản phẩm</h3>
+                                <div class="frame-caption">Tập trung vào ảnh, giá, cấu hình nổi bật và hai CTA: `Thêm giỏ` / `Mua ngay`.</div>
+                            </div>
+                            <span class="tag">Product detail</span>
+                        </div>
+                        <div class="window">
+                            <div class="window-bar">
+                                <div class="dots"><span></span><span></span><span></span></div>
+                                <div class="browser-pill">goldifytech.vn/products/rog-strix-g18</div>
+                                <div style="width: 70px"></div>
+                            </div>
+                            <div class="detail-demo">
+                                <div class="gallery">
+                                    <div class="gallery-main"></div>
+                                    <div class="thumb-row"><div></div><div></div><div></div><div></div></div>
+                                </div>
+                                <div class="detail-panel">
+                                    <span class="tag">Gaming laptop cao cấp</span>
+                                    <h4>ROG Strix G18 AI Edition</h4>
+                                    <p class="frame-caption">Hiệu năng mạnh, thiết kế sắc nét, phù hợp người dùng công nghệ thích trải nghiệm cao cấp và hình ảnh nổi bật.</p>
+                                    <div class="price-row" style="margin-top: 8px; justify-content: flex-start; gap: 24px;">
+                                        <div class="price"><strong>42.990.000đ</strong><span>46.990.000đ</span></div>
+                                        <div style="padding: 8px 12px; border-radius: 999px; background: rgba(36,211,154,0.14); color: #89f0c9;">Còn hàng</div>
+                                    </div>
+                                    <div class="spec-grid">
+                                        <div><strong>CPU</strong><div class="frame-caption">Intel Core Ultra</div></div>
+                                        <div><strong>GPU</strong><div class="frame-caption">RTX Series</div></div>
+                                        <div><strong>Màn hình</strong><div class="frame-caption">18" 240Hz</div></div>
+                                        <div><strong>RAM</strong><div class="frame-caption">32GB DDR5</div></div>
+                                    </div>
+                                    <div class="frame-caption" style="margin-bottom: 8px;">Phiên bản</div>
+                                    <div class="option-row">
+                                        <div class="option active">32GB / 1TB</div>
+                                        <div class="option">64GB / 1TB</div>
+                                        <div class="option">64GB / 2TB</div>
+                                    </div>
+                                    <div class="button-row">
+                                        <div class="button primary">Mua ngay</div>
+                                        <div class="button secondary">Thêm vào giỏ</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="frame" id="checkout">
+                        <div class="frame-title">
+                            <div>
+                                <h3>Mockup checkout một trang</h3>
+                                <div class="frame-caption">Bên trái nhập thông tin và OTP, bên phải tóm tắt đơn và tổng tiền luôn nhìn thấy.</div>
+                            </div>
+                            <span class="tag">Checkout concept</span>
+                        </div>
+                        <div class="window">
+                            <div class="window-bar">
+                                <div class="dots"><span></span><span></span><span></span></div>
+                                <div class="browser-pill">goldifytech.vn/checkout</div>
+                                <div style="width: 70px"></div>
+                            </div>
+                            <div class="checkout-demo">
+                                <div class="form-card catalog-card">
+                                    <strong style="display:block; font-size: 24px; margin-bottom: 16px">Thông tin nhận hàng</strong>
+                                    <div class="form-grid">
+                                        <div class="input">Họ và tên</div>
+                                        <div class="input">Số điện thoại</div>
+                                        <div class="input">Mã OTP</div>
+                                        <div class="input">Email</div>
+                                        <div class="input full">Địa chỉ nhận hàng</div>
+                                        <div class="textarea full">Ghi chú đơn hàng</div>
+                                    </div>
+                                    <strong style="display:block; font-size: 22px; margin: 22px 0 10px">Phương thức thanh toán</strong>
+                                    <div class="payment-methods">
+                                        <div class="pay-card active"><div class="left"><div class="radio"></div><div>COD - Thanh toán khi nhận hàng</div></div><strong>Phổ biến</strong></div>
+                                        <div class="pay-card"><div class="left"><div class="radio"></div><div>Visa / MasterCard</div></div><strong>Card</strong></div>
+                                        <div class="pay-card"><div class="left"><div class="radio"></div><div>Momo Wallet</div></div><strong>E-Wallet</strong></div>
+                                        <div class="pay-card"><div class="left"><div class="radio"></div><div>VNPay / Thẻ nội địa</div></div><strong>Redirect</strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="summary-card">
+                                    <strong style="display:block; font-size: 24px; margin-bottom: 16px">Đơn hàng của bạn</strong>
+                                    <div class="sum-row"><span>ROG Strix G18</span><strong>42.990.000đ</strong></div>
+                                    <div class="sum-row muted"><span>Phí vận chuyển</span><span>Miễn phí</span></div>
+                                    <div class="sum-row muted"><span>Giảm giá</span><span>-1.000.000đ</span></div>
+                                    <div class="sum-total">
+                                        <span>Tổng thanh toán</span>
+                                        <strong>41.990.000đ</strong>
+                                    </div>
+                                    <div class="button primary" style="width: 100%">Đặt hàng ngay</div>
+                                    <p class="frame-caption" style="margin-top: 14px">
+                                        UX chính ở đây là giảm ma sát: không bắt ép đăng nhập, chỉ cần xác minh OTP để hoàn tất đơn.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="frame" id="mobile">
+                        <div class="frame-title">
+                            <div>
+                                <h3>Mockup mobile-first</h3>
+                                <div class="frame-caption">Đây là hướng ưu tiên vì người dùng mua hàng công nghệ trên mobile vẫn rất nhiều.</div>
+                            </div>
+                            <span class="tag">Mobile preview</span>
+                        </div>
+                        <div class="mobile-preview">
+                            <div class="phone-frame">
+                                <div class="phone-screen">
+                                    <div class="mobile-top">
+                                        <span class="tag">Summer Tech Deal</span>
+                                        <h4>Thiết bị công nghệ đẹp, mạnh và dễ mua hơn.</h4>
+                                        <div class="button primary" style="width: 100%; margin-top: 14px">Xem ưu đãi hôm nay</div>
+                                    </div>
+                                    <div class="mobile-products">
+                                        <div class="mobile-card"><div class="mobile-thumb"></div><strong style="font-size: 13px">Laptop AI</strong><div class="frame-caption">42.9tr</div></div>
+                                        <div class="mobile-card"><div class="mobile-thumb"></div><strong style="font-size: 13px">Tai nghe ANC</strong><div class="frame-caption">9.7tr</div></div>
+                                        <div class="mobile-card"><div class="mobile-thumb"></div><strong style="font-size: 13px">OLED 32"</strong><div class="frame-caption">28.4tr</div></div>
+                                        <div class="mobile-card"><div class="mobile-thumb"></div><strong style="font-size: 13px">Keychron</strong><div class="frame-caption">5.2tr</div></div>
+                                    </div>
+                                    <div class="mobile-bottom-nav">
+                                        <div><span></span>Trang chủ</div>
+                                        <div><span></span>Danh mục</div>
+                                        <div><span></span>Giỏ hàng</div>
+                                        <div><span></span>Tài khoản</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="container">
+                <div class="footer-card">
+                    <div>
+                        <strong style="display:block; margin-bottom: 8px; color: var(--text);">Tóm tắt hướng thiết kế</strong>
+                        <div>Tông tối cao cấp, card rõ ràng, nhấn mạnh hiệu năng sản phẩm, CTA mạnh và checkout gọn cho thương mại điện tử công nghệ.</div>
+                    </div>
+                    <div class="tag">Demo concept by TRAE</div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
